@@ -1,6 +1,6 @@
-import { useState, useContext, useEffect } from "react"
+import { useContext, useEffect, useState } from "react"
+// import { fb } from "./firebase"
 import { GlobalContext } from "./pages/_app"
-import { fb } from "./firebase"
 
 declare var google: any
 
@@ -19,20 +19,25 @@ export const useGoogleOneTap = () => {
   useEffect(() => {
     if (!loggedInUser) {
       const handleCredentialResponse = (response) => {
+        console.log(response)
         setId_token(response.credential)
       }
 
-      const nativeCallback = (obj) => alert("native_callback!")
+      const nativeCallback = (obj) => {
+        console.log("hi!")
+        console.log(obj)
+      }
 
-      const client_id =
-        "812622916919-k75gcjkkqs04s57s5ks2f16q74qui6b2.apps.googleusercontent.com"
-
+      const client_id = ""
       google.accounts.id.initialize({
         client_id,
-        callback: handleCredentialResponse,
-        auto_select: true,
+        // callback: handleCredentialResponse,
+        auto_select: false,
         context: "use",
+        nonce: "his!",
         native_callback: nativeCallback,
+        ux_mode: "popup",
+        login_uri: "http://localhost:8080",
         prompt_parent_id: "put-google-one-tap-here-plz",
       })
       google.accounts.id.prompt((notification) => {
@@ -74,16 +79,16 @@ export const useGoogleOneTap = () => {
     console.log(loggedInUser)
   }, [loggedInUser])
 
-  useEffect(() => {
-    if (id_token) {
-      // Sign in with credential from the Google user.
-      fb.auth()
-        .signInWithCredential(fb.auth.GoogleAuthProvider.credential(id_token))
-        .catch(function (error) {
-          console.error("bruno says", error)
-        })
-    }
-  }, [id_token])
+  // useEffect(() => {
+  //   if (id_token) {
+  //     // Sign in with credential from the Google user.
+  //     // fb.auth()
+  //     //   .signInWithCredential(fb.auth.GoogleAuthProvider.credential(id_token))
+  //     //   .catch(function (error) {
+  //     //     console.error("bruno says", error)
+  //     //   })
+  //   }
+  // }, [id_token])
 
   return {
     shouldShowFallbackButton,

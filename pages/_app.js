@@ -1,25 +1,23 @@
-import React, { useState, useEffect } from "react"
-import { firebaseAuth, db } from "../firebase"
-import { useAuthState } from "react-firebase-hooks/auth"
 import { DefaultSeo } from "next-seo"
+import React, { useState } from "react"
 
 export const GlobalContext = React.createContext(null)
 
 export default ({ Component, pageProps }) => {
   const [loggedInUser, setLoggedInUser] = useState(null)
-  const [user, authLoading, authError] = useAuthState(firebaseAuth)
+  // const [user, authLoading, authError] = useAuthState(firebaseAuth)
 
-  useEffect(() => {
-    authError && console.error("authError", authError)
-  }, [authError])
+  // useEffect(() => {
+  //   authError && console.error("authError", authError)
+  // }, [authError])
 
-  useEffect(() => {
-    if (user && user.uid) {
-      setLoggedInUser(user)
-    } else {
-      setLoggedInUser(null)
-    }
-  }, [user])
+  // useEffect(() => {
+  //   if (user && user.uid) {
+  //     setLoggedInUser(user)
+  //   } else {
+  //     setLoggedInUser(null)
+  //   }
+  // }, [user])
 
   return (
     <>
@@ -47,7 +45,7 @@ export default ({ Component, pageProps }) => {
           cardType: "summary_large_image",
         }}
       />
-      <GlobalContext.Provider value={{ loggedInUser, authLoading }}>
+      <GlobalContext.Provider value={{ loggedInUser }}>
         <Component {...pageProps} />
       </GlobalContext.Provider>
       <style jsx global>
